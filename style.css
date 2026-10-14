@@ -1,0 +1,388 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #03030c;
+    font-family: 'Orbitron', sans-serif;
+    color: #ffffff;
+}
+
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Loader */
+#loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #03030c;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(0, 255, 255, 0.2);
+    border-top: 4px solid #00ffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading-text {
+    margin-top: 20px;
+    color: #00ffff;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+/* HUD */
+#hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    width: 100%;
+    pointer-events: none;
+}
+
+.hud-box {
+    background: rgba(10, 10, 30, 0.7);
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    padding: 10px 20px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    min-width: 120px;
+    text-align: center;
+}
+
+.hud-label {
+    font-size: 10px;
+    color: #8892b0;
+    letter-spacing: 1px;
+}
+
+.hud-val {
+    font-size: 24px;
+    font-weight: 900;
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+#ability-hud {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(10, 10, 30, 0.8);
+    border: 2px solid #ff00ff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+    overflow: hidden;
+}
+
+#ability-icon {
+    font-size: 20px;
+    z-index: 2;
+}
+
+#ability-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 255, 0.4);
+    transform-origin: bottom;
+    transition: transform 0.1s linear;
+    z-index: 1;
+}
+
+/* Screens */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #0f0c29 0%, #302b63 50%, #03030c 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto;
+    z-index: 20;
+    padding: 20px;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.05);
+}
+
+.hero-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(0,255,255,0.2) 0%, rgba(255,0,255,0) 70%);
+    border-radius: 50%;
+    z-index: -1;
+    filter: blur(40px);
+}
+
+h1.glitch-title {
+    font-size: 42px;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0 0 5px 0;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 2px 2px 0px #ff00ff, -2px -2px 0px #00ffff;
+    text-align: center;
+}
+
+h1.glitch-title.red {
+    text-shadow: 0 0 20px rgba(255, 0, 85, 0.8), 2px 2px 0px #00ffff, -2px -2px 0px #ff0055;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #00ffff;
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.section-title {
+    font-size: 14px;
+    color: #a0aec0;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+/* Character Selection */
+#character-select {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 35px;
+    max-width: 600px;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.char-card {
+    background: rgba(20, 20, 45, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    width: 160px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+}
+
+.char-card:hover {
+    border-color: rgba(0, 255, 255, 0.5);
+    transform: translateY(-5px);
+}
+
+.char-card.selected {
+    border-color: #00ffff;
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+}
+
+.char-icon {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.char-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.char-perk {
+    font-size: 10px;
+    color: #8892b0;
+    line-height: 1.3;
+}
+
+/* Cyber Buttons */
+.cyber-btn {
+    background: linear-gradient(135deg, #00ffff 0%, #0088ff 100%);
+    border: none;
+    padding: 16px 45px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    color: #03030c;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.cyber-btn:active {
+    transform: scale(0.96);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.cyber-btn.secondary {
+    background: transparent;
+    border: 2px solid #ff00ff;
+    color: #ff00ff;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+    margin-top: 15px;
+}
+
+/* Stats Card */
+.stats-card {
+    background: rgba(15, 15, 35, 0.8);
+    border: 1px solid rgba(255, 0, 255, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    width: 300px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 25px rgba(255, 0, 255, 0.2);
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.stat-row span:last-child {
+    color: #00ffff;
+    font-weight: 700;
+}
+
+/* Touch Controls */
+#touch-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    pointer-events: none;
+}
+
+.control-group {
+    display: flex;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+.ctrl-btn {
+    background: rgba(20, 20, 45, 0.5);
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    color: #00ffff;
+    font-size: 22px;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    outline: none;
+    transition: background 0.1s ease, transform 0.1s ease;
+}
+
+.ctrl-btn:active {
+    background: rgba(0, 255, 255, 0.4);
+    color: #ffffff;
+    transform: scale(0.92);
+}
+
+.ctrl-btn.jump {
+    border-color: #00ffff;
+    background: rgba(0, 255, 255, 0.2);
+}
+
+.ctrl-btn.special {
+    border-color: #ff00ff;
+    color: #ff00ff;
+    background: rgba(255, 0, 255, 0.2);
+}
+
+#pause-icon-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 45px;
+    height: 45px;
+    background: rgba(10, 10, 30, 0.7);
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #00ffff;
+    pointer-events: auto;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    z-index: 30;
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CYBERPUNK APEX: 3D ARCADE</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js + Postprocessing + Cannon.js physics for elite 3D graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body>
+    <div id="loader">
+        <div class="spinner"></div>
+        <div id="loading-text">GENERATING METAVERSE... 0%</div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div id="ui-layer">
+        <!-- HUD -->
+        <div id="hud" class="hidden">
+            <div class="hud-box left">
+                <div class="hud-label">SCORE</div>
+                <div id="score-val" class="hud-val">0</div>
+            </div>
+            <div class="hud-box center">
+                <div class="hud-label">MULTIPLIER</div>
+                <div id="mult-val" class="hud-val">x1.0</div>
+            </div>
+            <div class="hud-box right">
+                <div class="hud-label">CREDITS</div>
+                <div id="coins-val" class="hud-val">0</div>
+            </div>
+            <div id="ability-hud" class="cooldown-ready">
+                <div id="ability-icon">⚡</div>
+                <div id="ability-bar"></div>
+            </div>
+        </div>
+
+        <!-- Start / Character Selection Screen -->
+        <div id="menu-screen" class="screen">
+            <div class="hero-glow"></div>
+            <h1 class="glitch-title" data-text="CYBERPUNK APEX">CYBERPUNK APEX</h1>
+            <p class="subtitle">NEXT-GEN 3D MOBILE ARCADE EXPERIENCE</p>
+            
+            <div class="section-title">CHOOSE YOUR OPERATIVE</div>
+            <div id="character-select">
+                <div class="char-card selected" data-char="runner">
+                    <div class="char-icon">🏃‍♂️</div>
+                    <div class="char-name">VANGUARD</div>
+                    <div class="char-perk">Agile Dash & Double Jump</div>
+                </div>
+                <div class="char-card" data-char="cyborg">
+                    <div class="char-icon">🤖</div>
+                    <div class="char-name">TITAN X</div>
+                    <div class="char-perk">Shield Barrier & Coin Magnet</div>
+                </div>
+                <div class="char-card" data-char="ninja">
+                    <div class="char-icon">🥷</div>
+                    <div class="char-name">SHADOW BLADE</div>
+                    <div class="char-perk">Phase Shift & Speed Burst</div>
+                </div>
+            </div>
+
+            <button id="start-btn" class="cyber-btn">INITIALIZE RUN</button>
+        </div>
+
+        <!-- Pause Screen -->
+        <div id="pause-screen" class="screen hidden">
+            <h1>SYSTEM PAUSED</h1>
+            <button id="resume-btn" class="cyber-btn">RESUME</button>
+            <button id="quit-btn" class="cyber-btn secondary">ABORT RUN</button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen hidden">
+            <h1 class="glitch-title red" data-text="FATAL ERROR">FATAL ERROR</h1>
+            <div class="stats-card">
+                <div class="stat-row"><span>FINAL SCORE:</span> <span id="final-score">0</span></div>
+                <div class="stat-row"><span>CREDITS COLLECTED:</span> <span id="final-coins">0</span></div>
+                <div class="stat-row"><span>DISTANCE:</span> <span id="final-distance">0m</span></div>
+            </div>
+            <button id="restart-btn" class="cyber-btn">RE-BOOT SYSTEM</button>
+        </div>
+
+        <!-- Controls UI -->
+        <div id="touch-controls" class="hidden">
+            <div class="control-group left-controls">
+                <button id="btn-left" class="ctrl-btn">◀</button>
+                <button id="btn-right" class="ctrl-btn">▶</button>
+            </div>
+            <div class="control-group right-controls">
+                <button id="btn-ability" class="ctrl-btn special">⚡</button>
+                <button id="btn-jump" class="ctrl-btn jump">▲</button>
+            </div>
+        </div>
+        
+        <div id="pause-icon-btn" class="hidden">⏸</div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
